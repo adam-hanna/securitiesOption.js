@@ -54,10 +54,7 @@
 			    	Derivative[this.Nodes - k] = [];
 
 			        for (var i = k; i <= No_Underlying - k; i++) {
-			        	//console.log(k);
-			        	//console.log(i);
 			            Derivative[this.Nodes - k][i] = (Math.max((Underlying[i] - this.Strike).toExponential(), (Math.exp(((-this.Rf).toExponential() * Delta_t_yrs))).toExponential() * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i]).toExponential())).toExponential();
-			            //console.log(Derivative[this.Nodes - k][i]);
 			        };
 			    };
 			} else if (this.CorP === "put") {
@@ -73,39 +70,12 @@
 			    	Derivative[this.Nodes - k] = [];
 
 			        for (var i = k; i <= No_Underlying - k; i++) {
-			        	//console.log(k);
-			        	//console.log(i);
 			            Derivative[this.Nodes - k][i] = (Math.max((this.Strike - Underlying[i]).toExponential(), (Math.exp(((-this.Rf).toExponential() * Delta_t_yrs))).toExponential() * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i]).toExponential())).toExponential();
-			            //console.log(Derivative[this.Nodes - k][i]);
 			        };
 			    };
 			} else {
 				return "Error!";
-			}
-
-
-			/*
-			   'start with the leafs
-			    For i = 0 To No_Underlying
-			        Derivative(Nodes, i) = Max2(Strike - Underlying(i), 0)
-			    Next i
-
-			    'now the branches
-			    k = 1
-			    Do Until Nodes - k < 0
-			        For i = k To No_Underlying - k
-			            Derivative(Nodes - k, i) = Max2(Strike - Underlying(i), Exp(-Rf * Delta_t_yrs) * (Pu * Derivative(Nodes - k + 1, i - 1) + Pd * Derivative(Nodes - k + 1, i + 1) + Pm * Derivative(Nodes - k + 1, i)))
-			        Next i
-			    k = k + 1
-			    
-			    Loop
-
-			Else
-
-			Derivative(0, Nodes) = "Error"
-
-			End If
-			*/
+			};
 
 			return Derivative[0][this.Nodes];
 
@@ -116,11 +86,11 @@
 	var testOption = new securitiesOption({
 	    Spot: 1418.16,
 	    Strike: 3000,
-	    CorP: "put",
+	    CorP: "call",
 	    Sigma: 0.3702,
 	    Rf: 0.00261,
 	    Days: 854,
-	    Nodes: 80
+	    Nodes: 800
 	});
 
 	console.log(testOption.CRR());
