@@ -19,4 +19,15 @@ Methods:
 	    Days: //days until expiry
 	    Spot: //spot price of the underlying
 
+Example:
+	<!--HTML-->
+	<script>
+		var testOption = new securitiesOption({
+		    Strike: 3000,
+		    CorP: "call"
+		});
+
+		console.log(testOption.trinomialCRR(1418.16, 0.3702, 0.00261, 854, 800));
+	</script>
+
 - This is a work in progress -
