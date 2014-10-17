@@ -10,25 +10,25 @@
 
 <script>
 	function securitiesOption(oConstructor) {
-	    this.Spot = oConstructor.Spot.toExponential();
-	    this.Strike = oConstructor.Strike.toExponential();
+	    this.Spot = oConstructor.Spot;
+	    this.Strike = oConstructor.Strike;
 	    this.CorP = oConstructor.CorP.toLowerCase();
-	    this.Sigma = oConstructor.Sigma.toExponential();
-	    this.Rf = oConstructor.Rf.toExponential();
-	    this.Days = oConstructor.Days.toExponential()
+	    this.Sigma = oConstructor.Sigma;
+	    this.Rf = oConstructor.Rf;
+	    this.Days = oConstructor.Days
 	    this.Nodes = Math.round((oConstructor.Nodes || 800), 0),
 
 		this.CRR = function() {
 			var Delta_t_yrs, Up, Down, Pu, Pd, Pm, Max_up, No_Underlying;
 
-			Delta_t_yrs = (this.Days / 365 / this.Nodes).toExponential();
-			Up = (Math.exp((this.Sigma * Math.sqrt(2 * Delta_t_yrs).toExponential()).toExponential()).toExponential());
-			Down = (1 / Up).toExponential();
-			Pu = (Math.pow((Math.exp(this.Rf * Delta_t_yrs / 2).toExponential() - (Math.exp((-this.Sigma).toExponential() * Math.sqrt(Delta_t_yrs / 2).toExponential())).toExponential()).toExponential() / ((Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2).toExponential())).toExponential() - Math.exp((-this.Sigma).toExponential() * Math.sqrt(Delta_t_yrs / 2).toExponential())),2)).toExponential();
-			Pd = (Math.pow(((Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2).toExponential()) - Math.exp(this.Rf * Delta_t_yrs / 2).toExponential()) / (Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2).toExponential()) - Math.exp((-this.Sigma).toExponential() * Math.sqrt(Delta_t_yrs / 2).toExponential()))),2)).toExponential();
-			Pm = (1 - Pu - Pd).toExponential();
-			Max_up = (this.Spot * Math.pow(Up, this.Nodes).toExponential()).toExponential();
-			No_Underlying = (this.Nodes * 2).toExponential();
+			Delta_t_yrs = (this.Days / 365 / this.Nodes);
+			Up = (Math.exp((this.Sigma * Math.sqrt(2 * Delta_t_yrs))));
+			Down = (1 / Up);
+			Pu = (Math.pow((Math.exp(this.Rf * Delta_t_yrs / 2) - (Math.exp((-this.Sigma) * Math.sqrt(Delta_t_yrs / 2)))) / ((Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2))) - Math.exp((-this.Sigma) * Math.sqrt(Delta_t_yrs / 2))),2));
+			Pd = (Math.pow(((Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp(this.Rf * Delta_t_yrs / 2)) / (Math.exp(this.Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp((-this.Sigma) * Math.sqrt(Delta_t_yrs / 2)))),2));
+			Pm = (1 - Pu - Pd);
+			Max_up = (this.Spot * Math.pow(Up, this.Nodes));
+			No_Underlying = (this.Nodes * 2);
 
 			console.log(Delta_t_yrs, Up, Down, Pu, Pd, Pm, Max_up, No_Underlying);
 
@@ -37,7 +37,7 @@
 
 			//Input the final values of the underlying into the underlying array
 			for (var i = 0; i <= No_Underlying; i++) {
-				Underlying[i] = (Max_up * Math.pow(Down, i).toExponential()).toExponential();
+				Underlying[i] = (Max_up * Math.pow(Down, i));
 			};
 
 			//populate the trinomial tree
@@ -46,7 +46,7 @@
 			    Derivative[this.Nodes] = [];
 
 			    for (var i = 0; i <= No_Underlying; i++) {
-			    	Derivative[this.Nodes][i] = Math.max((Underlying[i] - this.Strike).toExponential(), 0).toExponential();
+			    	Derivative[this.Nodes][i] = Math.max((Underlying[i] - this.Strike), 0);
 			    };
 			    
 			    //now the branches
@@ -54,7 +54,7 @@
 			    	Derivative[this.Nodes - k] = [];
 
 			        for (var i = k; i <= No_Underlying - k; i++) {
-			            Derivative[this.Nodes - k][i] = (Math.max((Underlying[i] - this.Strike).toExponential(), (Math.exp(((-this.Rf).toExponential() * Delta_t_yrs))).toExponential() * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i]).toExponential())).toExponential();
+			            Derivative[this.Nodes - k][i] = (Math.max((Underlying[i] - this.Strike), (Math.exp(((-this.Rf) * Delta_t_yrs))) * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i])));
 			        };
 			    };
 			} else if (this.CorP === "put") {
@@ -62,7 +62,7 @@
 			    Derivative[this.Nodes] = [];
 
 			    for (var i = 0; i <= No_Underlying; i++) {
-			    	Derivative[this.Nodes][i] = Math.max((this.Strike - Underlying[i]).toExponential(), 0).toExponential();
+			    	Derivative[this.Nodes][i] = Math.max((this.Strike - Underlying[i]), 0);
 			    };
 			    
 			    //now the branches
@@ -70,7 +70,7 @@
 			    	Derivative[this.Nodes - k] = [];
 
 			        for (var i = k; i <= No_Underlying - k; i++) {
-			            Derivative[this.Nodes - k][i] = (Math.max((this.Strike - Underlying[i]).toExponential(), (Math.exp(((-this.Rf).toExponential() * Delta_t_yrs))).toExponential() * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i]).toExponential())).toExponential();
+			            Derivative[this.Nodes - k][i] = (Math.max((this.Strike - Underlying[i]), (Math.exp(((-this.Rf) * Delta_t_yrs))) * (Pu * Derivative[this.Nodes - k + 1][i - 1] + Pd * Derivative[this.Nodes - k + 1][i + 1] + Pm * Derivative[this.Nodes - k + 1][i])));
 			        };
 			    };
 			} else {
