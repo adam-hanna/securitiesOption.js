@@ -3,6 +3,16 @@
 
 securitiesOption.js is a javascript library for evaluating option prices.
 
+The structure of this readme is:
+<dl>
+  <dd>
+  <ol>
+    <li><b>Classes</b> - object classes that can be constructed with this library</li>
+    <li><b>Methods</b> - methods that can be run on included classes. Note: all methods are included within the classes' prototype object!</li>
+    <li><b>Functions</b> - functions that can be run outside of the classes</li>
+    <li><b>Examples</b></li>
+ </ol>
+</dl>
 
 ## Classes:
 
@@ -51,7 +61,7 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
-	<li><b>Sigma</b>: volatility of the underlying</li>
+  <li><b>Sigma</b>: volatility of the underlying</li>
     <li><b>Rf</b>: continuously compounded risk free rate</li>
     <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
@@ -62,7 +72,7 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
-	<li><b>Sigma</b>: volatility of the underlying</li>
+  <li><b>Sigma</b>: volatility of the underlying</li>
     <li><b>Rf</b>: continuously compounded risk free rate</li>
     <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
@@ -108,19 +118,19 @@ securitiesOption.js is a javascript library for evaluating option prices.
 </dl>
 
 ## Example:
-	
+  
 ```html
 <!--HTML-->
 <script>
-	var testOption = new securitiesOption({
-	    Strike: 3000,
-	    CorP: "put"
-	});
+  var testOption = new securitiesOption({
+      Strike: 3000,
+      CorP: "put"
+  });
 
-	var testInterest = new compoundInterest({
-		R: 0.06,
-		Freq: 12
-	});
+  var testInterest = new compoundInterest({
+    R: 0.06,
+    Freq: 12
+  });
 
   console.log(testOption.binomialCRR(1418.16, 0.3702, 0.00261, 0.06, 854, 800));
   console.log(testOption.trinomialTree(1418.16, 0.3702, 0.00261, 0.06, 854, 801));
