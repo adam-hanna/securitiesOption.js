@@ -20,13 +20,6 @@ securitiesOption.js is a javascript library for evaluating option prices.
   </ul>
   <dd><h6>Example</h6>
   <dd>
-```javascript
-var testOption = new securitiesOption({
-    Strike: 3000,
-    CorP: "call"
-});
-```
-
   <dt><h3>2. compoundInterest(oConstructor)</h3>
   <dd>This is an object that represents a compound interest rate.
   <dd><h6>Arguments</h6>
@@ -41,12 +34,6 @@ var testOption = new securitiesOption({
   </ul>
   <dd><h6>Example</h6>
   <dd>
-```javascript
-var testInterest = new compoundInterest({
-	R: 0.06,
-	Freq: 12
-});
-```
 </dl>
 
 ## Methods:
