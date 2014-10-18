@@ -18,8 +18,6 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <ul>
     <li>None; same as parameters</li>
   </ul>
-  <dd><h6>Example</h6>
-  <dd>
   <dt><h3>2. compoundInterest(oConstructor)</h3>
   <dd>This is an object that represents a compound interest rate.
   <dd><h6>Arguments</h6>
@@ -32,8 +30,6 @@ securitiesOption.js is a javascript library for evaluating option prices.
     <li><b>Rcont</b>: the continuous interest rate</li>
     <li><b>Reff</b>: the effective interest rate</li>
   </ul>
-  <dd><h6>Example</h6>
-  <dd>
 </dl>
 
 ## Methods:
