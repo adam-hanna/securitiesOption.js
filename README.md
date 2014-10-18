@@ -1,7 +1,7 @@
 # securitiesOption.js
 
 
-securitiesOption.js is a javascript library for evaluating option prices.
+securitiesOption.js is a javascript library for evaluating option prices. To increase accuracy, all monetary arguments should be input as whole integers in the smallest denomination possible (e.g. cents and not dollars: 10050 cents rather than 100.50 dollars).
 
 The structure of this readme is:
 <dl>
@@ -123,7 +123,7 @@ The structure of this readme is:
 <!--HTML-->
 <script>
   var testOption = new securitiesOption({
-      Strike: 3000,
+      Strike: 300000, //in cents!
       CorP: "put"
   });
 
@@ -132,22 +132,22 @@ The structure of this readme is:
     Freq: 12
   });
 
-  console.log(testOption.binomialCRR(1418.16, 0.3702, 0.00261, 0.06, 854, 800));
-  console.log(testOption.trinomialTree(1418.16, 0.3702, 0.00261, 0.06, 854, 801));
-  console.log(testOption.BS(1418.16, 0.3702, 0.00261, 0.06, 854));
-  console.log(testInterest.futureValue(100, 10));
+  console.log(testOption.binomialCRR(141816, 0.3702, 0.00261, 0.06, 854, 800));
+  console.log(testOption.trinomialTree(141816, 0.3702, 0.00261, 0.06, 854, 801));
+  console.log(testOption.BS(141816, 0.3702, 0.00261, 0.06, 854));
+  console.log(testInterest.futureValue(10000, 10));
   console.log(testInterest.Rcont);
   console.log(testInterest.Reff);
 </script>
 
 <!--Will Return-->
-=>1776.2169841110158
+=>177621.69841110162
 
-=>1776.2191309055258
+=>177621.92970654677
 
-=>1776.209219215999
+=>177620.92192159995
 
-=>181.93967340322803
+=>18193.967340322804
 
 =>0.059850498132467615
 
