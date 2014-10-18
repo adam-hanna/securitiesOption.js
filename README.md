@@ -40,7 +40,7 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
-  <li><b>Sigma</b>: volatility of the underlying</li>
+    <li><b>Sigma</b>: volatility of the underlying</li>
     <li><b>Rf</b>: continuously compounded risk free rate</li>
     <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
@@ -114,7 +114,7 @@ securitiesOption.js is a javascript library for evaluating option prices.
 <script>
 	var testOption = new securitiesOption({
 	    Strike: 3000,
-	    CorP: "call"
+	    CorP: "put"
 	});
 
 	var testInterest = new compoundInterest({
@@ -122,14 +122,17 @@ securitiesOption.js is a javascript library for evaluating option prices.
 		Freq: 12
 	});
 
-  console.log(testOption.trinomialTree(1418.16, 0.3702, 0.00261, 0.06, 854, 800));
+  console.log(testOption.binomialCRR(1418.16, 0.3702, 0.00261, 0.06, 854, 800));
+  console.log(testOption.trinomialTree(1418.16, 0.3702, 0.00261, 0.06, 854, 801));
   console.log(testOption.BS(1418.16, 0.3702, 0.00261, 0.06, 854));
-	console.log(testInterest.futureValue(100, 10));
-	console.log(testInterest.Rcont);
-	console.log(testInterest.Reff);
+  console.log(testInterest.futureValue(100, 10));
+  console.log(testInterest.Rcont);
+  console.log(testInterest.Reff);
 </script>
 
 <!--Will Return-->
+=>1776.2169841110158
+
 =>1776.2191309055258
 
 =>1776.209219215999
