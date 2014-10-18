@@ -16,7 +16,7 @@ securitiesOption.js is a javascript library for evaluating option prices.
   </ul>
   <dd><h6>Additional Properties</h6> 
   <ul>
-    <li>None; same as parameters</li>
+    <li>None; same as arguments</li>
   </ul>
   <dt><h3>2. compoundInterest(oConstructor)</h3>
   <dd>This is an object that represents a compound interest rate.
@@ -34,18 +34,31 @@ securitiesOption.js is a javascript library for evaluating option prices.
 
 ## Methods:
 <dl>
-  <dt><h3>1. securitiesOption.trinomialCRR(Spot, Sigma, Rf, Days, Nodes)</h3>
-  <dd>This method calculates the trinomial Cox Ross Rubinstein value of the option. This method cannot currently account for dividends!
+  <dt><h3>1. securitiesOption.binomialCRR(Spot, Sigma, Rf, Rd, Days, Nodes)</h3>
+  <dd>source: http://en.wikipedia.org/wiki/Binomial_options_pricing_model
+  <dd>This method calculates the Cox Ross Rubinstein binomial tree model value of an American option. European options will be supported in future releases. Please note that this method takes continuously compounded interest rates as arguments and therefore might yield inaccurate results near an ex-dividend date!
+  <dd><h6>Arguments</h6>
+  <ul>
+    <li><b>Spot</b>: spot price of the underlying</li>
+  <li><b>Sigma</b>: volatility of the underlying</li>
+    <li><b>Rf</b>: continuously compounded risk free rate</li>
+    <li><b>Rd</b>: continuously compounded dividend rate</li>
+    <li><b>Days</b>: days until expiry</li>
+    <li><b>Nodes</b>: [OPTIONAL] the number of binomial nodes to generate (i.e. the height of the tree; Default = 800 i.e. 800 steps)</li>
+  </ul>
+  <dt><h3>2. securitiesOption.trinomialTree(Spot, Sigma, Rf, Rd, Days, Nodes)</h3>
+  <dd>This method calculates the trinomial tree value of an American option. European options will be supported in future releases. Please note that this method takes continuously compounded interest rates as arguments and therefore might yield inaccurate results near an ex-dividend date!
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
 	<li><b>Sigma</b>: volatility of the underlying</li>
     <li><b>Rf</b>: continuously compounded risk free rate</li>
+    <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
-    <li><b>Nodes</b>: [OPTIONAL] the number of trinomial nodes to generate (Default = 800)</li>
+    <li><b>Nodes</b>: [OPTIONAL] the number of trinomial nodes to generate (i.e. the height of the tree; Default = 801 i.e. 800 steps)</li>
   </ul>
-  <dt><h3>2. securitiesOption.BS(Spot, Sigma, Rf, Rd, Days)</h3>
-  <dd>This method calculates the Black-Scholes value of the option. This method <b>CAN</b> account for dividends!
+  <dt><h3>3. securitiesOption.BS(Spot, Sigma, Rf, Rd, Days)</h3>
+  <dd>This method calculates the Black-Scholes value of the option. Please note that this method takes continuously compounded interes rates as inputs!
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
@@ -54,19 +67,19 @@ securitiesOption.js is a javascript library for evaluating option prices.
     <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
   </ul>
-  <dt><h3>3. compoundInterest.continuousRate()</h3>
+  <dt><h3>4. compoundInterest.continuousRate()</h3>
   <dd>This method calculates the continuously compounded interest rate for the compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
     <li>None</li>
   </ul>
-  <dt><h3>4. compoundInterest.effectiveRate()</h3>
+  <dt><h3>5. compoundInterest.effectiveRate()</h3>
   <dd>This method calculates the effective interest rate for the compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
     <li>None</li>
   </ul>
-  <dt><h3>5. compoundInterest.futureValue(P, t)</h3>
+  <dt><h3>6. compoundInterest.futureValue(P, t)</h3>
   <dd>This method calculates the future value of a principle value compounded at the rate of a compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
@@ -84,9 +97,10 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <ul>
     <li><b>x</b>: numeric input</li>
   </ul>
-  <dt><h3>2. normDist(x)</h3>
+  <dt><h3>2. normDist(z)</h3>
   <dd>source: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
   <dd>"[This function] returns the probability that the observed value of a standard normal random variable will be less than or equal to z."
+  <dd>This function is used in the Black-Scholes method.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>z</b>: numeric input</li>
@@ -108,17 +122,17 @@ securitiesOption.js is a javascript library for evaluating option prices.
 		Freq: 12
 	});
 
-	console.log(testOption.trinomialCRR(1418.16, 0.3702, 0.00261, 854, 800));
-	console.log(testOption.BS(1418.16, 0.3702, 0.00261, 0, 854));
+  console.log(testOption.trinomialTree(1418.16, 0.3702, 0.00261, 0.06, 854, 800));
+  console.log(testOption.BS(1418.16, 0.3702, 0.00261, 0.06, 854));
 	console.log(testInterest.futureValue(100, 10));
 	console.log(testInterest.Rcont);
 	console.log(testInterest.Reff);
 </script>
 
 <!--Will Return-->
-=>50.23282190616111
+=>1776.2191309055258
 
-=>50.222064023751386
+=>1776.209219215999
 
 =>181.93967340322803
 

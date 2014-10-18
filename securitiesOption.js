@@ -13,15 +13,70 @@ function compoundInterest(oConstructor) {
 
 
 //Methods
-securitiesOption.prototype.trinomialCRR = function(Spot, Sigma, Rf, Days, Nodes) {
+securitiesOption.prototype.binomialCRR = function(Spot, Sigma, Rf, Rd, Days, Nodes) {
+	//source: http://en.wikipedia.org/wiki/Binomial_options_pricing_model
+
 	Nodes = Math.round((Nodes || 800));
+	var Delta_t_yrs, Up, P0, P1;
+
+	Delta_t_yrs = (Days / 365 / Nodes);
+	Up = Math.exp(Sigma * Math.sqrt(Delta_t_yrs));
+
+	P0 = (Up * Math.exp(-Rf * Delta_t_yrs) - Math.exp(-Rd * Delta_t_yrs)) * Up / (Math.pow(Up,2) - 1);
+	P1 = Math.exp(-Rf * Delta_t_yrs) - P0;
+
+	var Derivative = [];
+	var Excercise = 0;
+
+	if (this.CorP === "put") {
+		//Calculate initial values at time T
+		for (var i = 0; i <= Nodes; i++) {
+			Derivative[i] = Math.max(this.Strike - Spot * Math.pow(Up, 2 * i - Nodes), 0);
+		};
+
+		//move to earlier times
+		for (var j = Nodes - 1; j >= 0; j--) {
+			for (var i = 0; i <= j; i++) {
+				Derivative[i] = P0 * Derivative[i] + P1 * Derivative[i + 1];
+				Excercise = this.Strike - Spot * Math.pow(Up, 2 * i - j);
+				Derivative[i] = Math.max(Derivative[i], Excercise);
+			};
+		};
+
+		return	Derivative[0];
+
+	} else if (this.CorP == "call") {
+		//Calculate initial values at time T
+		for (var i = 0; i <= Nodes; i++) {
+			Derivative[i] = Math.max(Spot * Math.pow(Up, 2 * i - Nodes) - this.Strike, 0);
+		};
+
+		//move to earlier times
+		for (var j = Nodes - 1; j >= 0; j--) {
+			for (var i = 0; i <= j; i++) {
+				Derivative[i] = P0 * Derivative[i] + P1 * Derivative[i + 1];
+				Excercise = Spot * Math.pow(Up, 2 * i - j) - this.Strike;
+				Derivative[i] = Math.max(Derivative[i], Excercise);
+			};
+		};
+
+		return	Derivative[0];
+
+	} else {
+		return "Error!";
+	}
+
+};
+
+securitiesOption.prototype.trinomialTree = function(Spot, Sigma, Rf, Rd, Days, Nodes) {
+	Nodes = Math.round((Nodes || 801));
 	var Delta_t_yrs, Up, Down, Pu, Pd, Pm, Max_up, No_Underlying;
 
 	Delta_t_yrs = (Days / 365 / Nodes);
 	Up = (Math.exp((Sigma * Math.sqrt(2 * Delta_t_yrs))));
 	Down = (1 / Up);
-	Pu = (Math.pow((Math.exp(Rf * Delta_t_yrs / 2) - (Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2)))) / ((Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2))) - Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2))),2));
-	Pd = (Math.pow(((Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp(Rf * Delta_t_yrs / 2)) / (Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2)))),2));
+	Pu = (Math.pow((Math.exp((Rf - Rd) * Delta_t_yrs / 2) - (Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2)))) / ((Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2))) - Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2))),2));
+	Pd = (Math.pow(((Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp((Rf - Rd) * Delta_t_yrs / 2)) / (Math.exp(Sigma * Math.sqrt(Delta_t_yrs / 2)) - Math.exp((-Sigma) * Math.sqrt(Delta_t_yrs / 2)))),2));
 	Pm = (1 - Pu - Pd);
 	Max_up = (Spot * Math.pow(Up, Nodes));
 	No_Underlying = (Nodes * 2);
