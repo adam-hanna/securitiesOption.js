@@ -11,8 +11,8 @@ securitiesOption.js is a javascript library for evaluating option prices.
   <dd>This is an object that represents a securities option.
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>oConstructor.Strike</u>: strike price of  the option</li>
-    <li><u>oConstructor.CorP</u>: "call" or "put" ; case-insensitive</li>
+    <li><b>oConstructor.Strike</b>: strike price of  the option</li>
+    <li><b>oConstructor.CorP</b>: "call" or "put" ; case-insensitive</li>
   </ul>
   <dd><h6>Additional Properties</h6> 
   <ul>
@@ -31,13 +31,13 @@ var testOption = new securitiesOption({
   <dd>This is an object that represents a compound interest rate.
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>oConstructor.R</u>: interest rate (i.e. nominal APR or annual nominal interest rate)</li>
-    <li><u>oConstructor.Freq</u>: frequency of compounding (e.g. 1 = annually; 12 = monthly)</li>
+    <li><b>oConstructor.R</b>: interest rate (i.e. nominal APR or annual nominal interest rate)</li>
+    <li><b>oConstructor.Freq</b>: frequency of compounding (e.g. 1 = annually; 12 = monthly)</li>
   </ul>
   <dd><h6>Additional Properties</h6>
   <ul>
-    <li><u>Rcont</u>: the continuous interest rate</li>
-    <li><u>Reff</u>: the effective interest rate</li>
+    <li><b>Rcont</b>: the continuous interest rate</li>
+    <li><b>Reff</b>: the effective interest rate</li>
   </ul>
   <dd><h6>Example</h6>
   <dd>
@@ -55,21 +55,21 @@ var testInterest = new compoundInterest({
   <dd>This method calculates the trinomial Cox Ross Rubinstein value of the option. This method cannot currently account for dividends!
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>Spot</u>: spot price of the underlying</li>
-	<li><u>Sigma</u>: volatility of the underlying</li>
-    <li><u>Rf</u>: continuously compounded risk free rate</li>
-    <li><u>Days</u>: days until expiry</li>
-    <li><u>Nodes</u>: [OPTIONAL] the number of trinomial nodes to generate (Default = 800)</li>
+    <li><b>Spot</b>: spot price of the underlying</li>
+	<li><b>Sigma</b>: volatility of the underlying</li>
+    <li><b>Rf</b>: continuously compounded risk free rate</li>
+    <li><b>Days</b>: days until expiry</li>
+    <li><b>Nodes</b>: [OPTIONAL] the number of trinomial nodes to generate (Default = 800)</li>
   </ul>
   <dt><h3>2. securitiesOption.BS(Spot, Sigma, Rf, Rd, Days)</h3>
   <dd>This method calculates the Black-Scholes value of the option. This method <b>CAN</b> account for dividends!
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>Spot</u>: spot price of the underlying</li>
-	<li><u>Sigma</u>: volatility of the underlying</li>
-    <li><u>Rf</u>: continuously compounded risk free rate</li>
-    <li><u>Rd</u>: continuously compounded dividend rate</li>
-    <li><u>Days</u>: days until expiry</li>
+    <li><b>Spot</b>: spot price of the underlying</li>
+	<li><b>Sigma</b>: volatility of the underlying</li>
+    <li><b>Rf</b>: continuously compounded risk free rate</li>
+    <li><b>Rd</b>: continuously compounded dividend rate</li>
+    <li><b>Days</b>: days until expiry</li>
   </ul>
   <dt><h3>3. compoundInterest.continuousRate()</h3>
   <dd>This method calculates the continuously compounded interest rate for the compoundInterest class.
@@ -87,8 +87,8 @@ var testInterest = new compoundInterest({
   <dd>This method calculates the future value of a principle value compounded at the rate of a compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>P</u>: Principle value</li>
-    <li><u>t</u>: time, in years, for compounding
+    <li><b>P</b>: Principle value</li>
+    <li><b>t</b>: time, in years, for compounding
   </ul>
 </dl>
 
@@ -99,14 +99,14 @@ var testInterest = new compoundInterest({
   <dd>The error function (a.k.a the Gauss error function) modified by Homer's method and is used in the normDist function.
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>x</u>: numeric input</li>
+    <li><b>x</b>: numeric input</li>
   </ul>
   <dt><h3>2. normDist(x)</h3>
   <dd>source: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
   <dd>"[This function] returns the probability that the observed value of a standard normal random variable will be less than or equal to z."
   <dd><h6>Arguments</h6>
   <ul>
-    <li><u>z</u>: numeric input</li>
+    <li><b>z</b>: numeric input</li>
   </ul>
 </dl>
 
