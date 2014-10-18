@@ -11,6 +11,7 @@ The structure of this readme is:
     <li><b>Methods</b> - methods that can be run on included classes. Note: all methods are included within the classes' prototype object!</li>
     <li><b>Functions</b> - functions that can be run outside of the classes</li>
     <li><b>Examples</b></li>
+    <li><b>Licenses</b></li>
  </ol>
 </dl>
 
@@ -45,7 +46,7 @@ The structure of this readme is:
 ## Methods:
 <dl>
   <dt><h3>1. securitiesOption.binomialCRR(Spot, Sigma, Rf, Rd, Days, Nodes)</h3>
-  <dd>source: http://en.wikipedia.org/wiki/Binomial_options_pricing_model
+  <dd>source (modified from original): http://en.wikipedia.org/wiki/Binomial_options_pricing_model
   <dd>This method calculates the Cox Ross Rubinstein binomial tree model value of an American option. European options will be supported in future releases. Please note that this method takes continuously compounded interest rates as arguments and therefore might yield inaccurate results near an ex-dividend date!
   <dd><h6>Arguments</h6>
   <ul>
@@ -101,14 +102,14 @@ The structure of this readme is:
 ## Functions:
 <dl>
   <dt><h3>1. erf(x)</h3>
-  <dd>source: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
+  <dd>source (modified from original): http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
   <dd>The error function (a.k.a the Gauss error function) modified by Homer's method and is used in the normDist function.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>x</b>: numeric input</li>
   </ul>
   <dt><h3>2. normDist(z)</h3>
-  <dd>source: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
+  <dd>source (modified from original): http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
   <dd>"[This function] returns the probability that the observed value of a standard normal random variable will be less than or equal to z."
   <dd>This function is used in the Black-Scholes method.
   <dd><h6>Arguments</h6>
@@ -154,4 +155,35 @@ The structure of this readme is:
 =>0.06167781186449761
 ```
 
-#### Note: this is a work in progress
+## Licenses:
+<dl><dd>This work is licensed under the (included) MIT license. Other works that have been included in this work have been properly identified and attributed. Licenses for these works have also been included in the licenses folder within the "deps" subfolder.
+</dl>
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2014 Adam Hanna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+<<<<<<< HEAD
+SOFTWARE.
+=======
+SOFTWARE.
+
+>>>>>>> 8ecb467178fc76097230c6bcc2afb2db8ca99636
+```

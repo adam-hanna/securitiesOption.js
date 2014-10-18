@@ -14,7 +14,7 @@ function compoundInterest(oConstructor) {
 
 //Methods
 securitiesOption.prototype.binomialCRR = function(Spot, Sigma, Rf, Rd, Days, Nodes) {
-	//source: http://en.wikipedia.org/wiki/Binomial_options_pricing_model
+	//source (modified from original): http://en.wikipedia.org/wiki/Binomial_options_pricing_model
 
 	Nodes = Math.round((Nodes || 800));
 	var Delta_t_yrs, Up, P0, P1;
@@ -161,7 +161,7 @@ compoundInterest.prototype.futureValue = function(P, t) {
 
 //Functions
 function erf(x) {
-	//taken from: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
+	//source (modified from original): http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
     //A&S formula 7.1.26
     var a1 = 0.254829592;
     var a2 = -0.284496736;
@@ -181,7 +181,7 @@ function erf(x) {
 };
 
 function normDist(z) {
-	//taken from: http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
+	//source (modified from original): http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
 	var sign = 1;
     if (z < 0) sign = -1;
     return (0.5 * (1.0 + sign * erf(Math.abs(z)/Math.sqrt(2))));
