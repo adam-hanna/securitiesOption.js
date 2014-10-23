@@ -84,11 +84,11 @@ The structure of this readme is:
   <dd>NOTE 2: the algorithm uses a linear estimate for the slope of the volatility curve. In other words, Vega is not used when the Black-Scholes input method is specified.
   <dd><h6>Arguments</h6>
   <ul>
-    <li><b>Method</b>: the method to be used in calculating the options value. Note the example carefully!</li>
+    <li><b>Method</b>: the method to be used in calculating the option's price. Note the example carefully!</li>
     <li><b>aMethodParams</b>: the inputs to the pricing method as an array.</li>
     <li><b>Price</b>: the current trading price of the option</li>
     <li><b>Tol</b>: [OPTIONAL] the allowed error from the target price. The default is 0.1% of the option price.</li>
-    <li><b>maxIter</b>: [OPTIONAL] the maxinum number of iterations. The default is 1,000.</li>
+    <li><b>maxIter</b>: [OPTIONAL] the maximum number of iterations. The default is 1,000.</li>
   </ul>
   <dt><h3>5. compoundInterest.continuousRate()</h3>
   <dd>This method calculates the continuously compounded interest rate for the compoundInterest class.
