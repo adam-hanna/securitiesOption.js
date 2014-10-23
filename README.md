@@ -1,7 +1,7 @@
 # securitiesOption.js
 
 
-securitiesOption.js is a javascript library for evaluating option prices. To increase accuracy, all monetary arguments should be input as whole integers in the smallest denomination possible (e.g. cents and not dollars: 10050 cents rather than 100.50 dollars).
+securitiesOption.js is a javascript library for evaluating option prices and implied volatilities. To increase accuracy, all monetary arguments should be input as whole integers in the smallest denomination possible (e.g. cents and not dollars: 10050 cents rather than 100.50 dollars).
 
 The structure of this readme is:
 <dl>
@@ -69,7 +69,7 @@ The structure of this readme is:
     <li><b>Nodes</b>: [OPTIONAL] the number of trinomial nodes to generate (i.e. the height of the tree; Default = 801 i.e. 800 steps)</li>
   </ul>
   <dt><h3>3. securitiesOption.BS(Spot, Sigma, Rf, Rd, Days)</h3>
-  <dd>This method calculates the Black-Scholes value of the option. Please note that this method takes continuously compounded interes rates as inputs!
+  <dd>This method calculates the Black-Scholes value of the option. Please note that this method takes continuously compounded interest rates as inputs!
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Spot</b>: spot price of the underlying</li>
@@ -115,7 +115,7 @@ The structure of this readme is:
 <dl>
   <dt><h3>1. erf(x)</h3>
   <dd>source (modified from original): http://www.codeproject.com/Articles/408214/Excel-Function-NORMSDIST-z
-  <dd>The error function (a.k.a the Gauss error function) modified by Homer's method and is used in the normDist function.
+  <dd>The error function (a.k.a. the Gauss error function) modified by Homer's method and is used in the normDist function.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>x</b>: numeric input</li>
