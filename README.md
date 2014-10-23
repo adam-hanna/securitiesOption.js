@@ -78,19 +78,29 @@ The structure of this readme is:
     <li><b>Rd</b>: continuously compounded dividend rate</li>
     <li><b>Days</b>: days until expiry</li>
   </ul>
-  <dt><h3>4. compoundInterest.continuousRate()</h3>
+  <dt><h3>4. securitiesOption.impVol(Method, aMethodParams, Price, Tol, maxIter)</h3>
+  <dd>This method numerically calculates the implied volatility of an option using a modified secant algorithm. Unlike a normal secant method, this algorithm only approaches the correct volatility from a value greater than the goal.<br>NOTE: in aMethodParams, a guess for the value for sigma must be provided. The guess should be greater than the actual value of sigma. If the guess is lower, the algorithm will automatically increase sigma to an acceptably higher value.
+  <dd><h6>Arguments</h6>
+  <ul>
+    <li><b>Method</b>: the method to be used in calculating the options value. Note the example carefully!</li>
+    <li><b>aMethodParams</b>: the inputs to the pricing method as an array.</li>
+    <li><b>Price</b>: the current trading price of the option</li>
+    <li><b>Tol</b>: [OPTIONAL] the allowed error from the target price. The default is 0.1% of the option price.</li>
+    <li><b>maxIter</b>: [OPTIONAL] the maxinum number of iterations. The default is 1,000.</li>
+  </ul>
+  <dt><h3>5. compoundInterest.continuousRate()</h3>
   <dd>This method calculates the continuously compounded interest rate for the compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
     <li>None</li>
   </ul>
-  <dt><h3>5. compoundInterest.effectiveRate()</h3>
+  <dt><h3>6. compoundInterest.effectiveRate()</h3>
   <dd>This method calculates the effective interest rate for the compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
     <li>None</li>
   </ul>
-  <dt><h3>6. compoundInterest.futureValue(P, t)</h3>
+  <dt><h3>7. compoundInterest.futureValue(P, t)</h3>
   <dd>This method calculates the future value of a principle value compounded at the rate of a compoundInterest class.
   <dd><h6>Arguments</h6>
   <ul>
@@ -133,26 +143,29 @@ The structure of this readme is:
     Freq: 12
   });
 
-  console.log(testOption.binomialCRR(141816, 0.3702, 0.00261, 0.06, 854, 800));
-  console.log(testOption.trinomialTree(141816, 0.3702, 0.00261, 0.06, 854, 801));
-  console.log(testOption.BS(141816, 0.3702, 0.00261, 0.06, 854));
-  console.log(testInterest.futureValue(10000, 10));
-  console.log(testInterest.Rcont);
-  console.log(testInterest.Reff);
+  console.log("CRR: " + testOption.binomialCRR(141816, 0.3702, 0.00261, 0.06, 854, 800));
+  console.log("Trinomial: " + testOption.trinomialTree(141816, 0.3702, 0.00261, 0.06, 854, 801));
+  console.log("BS: " + testOption.BS(141816, 0.3702, 0.00261, 0.06, 854));
+  console.log("BS Imp. Vol.: " + testOption.impVol(testOption.BS, [141816, 0.8, 0.00261, 0.06, 854], 177620.92, 1, 1000));
+  console.log("Future Val.: " + testInterest.futureValue(10000, 10));
+  console.log("Continuous R: " + testInterest.Rcont);
+  console.log("Effective R: " + testInterest.Reff);
 </script>
 
 <!--Will Return-->
-=>177621.69841110162
+=>CRR: 177621.69841110162
 
-=>177621.92970654677
+=>Trinomial: 177621.92970654677
 
-=>177620.92192159995
+=>BS: 177620.92192159995
 
-=>18193.967340322804
+=>BS Imp. Vol.: 0.37020675930332103
 
-=>0.059850498132467615
+=>Future Val.: 18193.967340322804
 
-=>0.06167781186449761
+=>Continuous R: 0.059850498132467615
+
+=>Effective R: 0.06167781186449761
 ```
 
 ## Licenses:

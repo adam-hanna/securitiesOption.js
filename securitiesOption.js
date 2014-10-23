@@ -155,6 +155,14 @@ securitiesOption.prototype.impVol = function(Method, aMethodParams, Price, Tol, 
 		return aMethodParams[1];
 	};
 
+	//was a safe value of sigma provided?
+	if (P < Price) {
+		for (var j = 0; P < Price; j++) {
+			aMethodParams[1] = aMethodParams[1] * 1.25;
+			P = Method.apply(this, aMethodParams);
+		};
+	};
+
 	//Do the first calc out of the loop
 	var aFuncParamsEarlier = aMethodParams.slice(0);
 	aFuncParamsEarlier[1] += 0.1;
