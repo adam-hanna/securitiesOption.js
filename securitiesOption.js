@@ -43,8 +43,6 @@ securitiesOption.prototype.binomialCRR = function(Spot, Sigma, Rf, Rd, Days, Nod
 			};
 		};
 
-		return	Derivative[0];
-
 	} else if (this.CorP == "call") {
 		//Calculate initial values at time T
 		for (var i = 0; i <= Nodes; i++) {
@@ -60,11 +58,11 @@ securitiesOption.prototype.binomialCRR = function(Spot, Sigma, Rf, Rd, Days, Nod
 			};
 		};
 
-		return	Derivative[0];
-
 	} else {
-		return "Error!";
-	}
+		return null;
+	};
+		
+	return	Derivative[0];
 
 };
 
@@ -123,7 +121,7 @@ securitiesOption.prototype.trinomialTree = function(Spot, Sigma, Rf, Rd, Days, N
 	        };
 	    };
 	} else {
-		return "Error!";
+		return null;
 	};
 
 	return Derivative[0][Nodes];
@@ -144,6 +142,144 @@ securitiesOption.prototype.BS = function(Spot, Sigma, Rf, Rd, Days) {
 	};
 
 	return BS;
+};
+
+securitiesOption.prototype.goalSeek = function(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
+	var g, Y, Y1, OldTarget;
+
+	Tol = (Tol || 0.001 * Goal);
+	maxIter = (maxIter || 1000);
+
+	//is the independent variable within an object?
+	if (oFuncArgTarget.propStr) {
+		//Iterate through the guesses
+		for (var i = 0; i < maxIter; i++) {
+			//define the root of the function as the error
+			Y = Func.apply(this, aFuncParams) - Goal;
+			
+			//was our initial guess a good one?
+			if (Math.abs(Y) <= Tol) {
+				return getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
+			} else {
+				OldTarget = getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
+				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget + Y);
+				Y1 = Func.apply(this, aFuncParams) - Goal;
+				g = (Y1 - Y) / Y;
+
+				if (g === 0) {
+					g = 0.0001;
+				};
+
+				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget - Y / g);
+			};
+
+		};
+		if (Math.abs(Y) > Tol) {
+			return null;
+		};
+	} else {
+		//Iterate through the guesses
+		for (var i = 0; i < maxIter; i++) {
+			//define the root of the function as the error
+			Y = Func.apply(this, aFuncParams) - Goal;
+			
+			//was our initial guess a good one?
+			if (Math.abs(Y) <= Tol) {
+				return aFuncParams[oFuncArgTarget.Position];
+			} else {
+				OldTarget = aFuncParams[oFuncArgTarget.Position];
+				aFuncParams[oFuncArgTarget.Position] = OldTarget + Y;
+				Y1 = Func.apply(this, aFuncParams) - Goal;
+				g = (Y1 - Y) / Y;
+
+				if (g === 0) {
+					g = 0.0001;
+				};
+
+				aFuncParams[oFuncArgTarget.Position] = OldTarget - Y / g;
+			};
+
+		};
+		if (Math.abs(Y) > Tol) {
+			return null;
+		};
+	};
+};
+
+securitiesOption.prototype.impVol = function(Method, aMethodParams, Price, Tol, maxIter) {
+	Tol = (Tol || 0.001 * Price);
+	maxIter = (maxIter || 1000);
+
+	var P = Method.apply(this, aMethodParams);
+
+	if (Math.abs(P - Price) <= Tol) {
+		return aMethodParams[1];
+	};
+
+	//Do the first calc out of the loop
+	var aFuncParamsEarlier = aMethodParams.slice(0);
+	aFuncParamsEarlier[1] = 2.0;
+	var PEarlier = Method.apply(this, aFuncParamsEarlier);
+
+	aMethodParams[1] = 1.5;
+	var P = Method.apply(this, aMethodParams);
+
+	var Slope = (P - PEarlier) / (aMethodParams[1] - aFuncParamsEarlier[1]);
+	var B = P - Price - Slope * 1.5; console.log(B);
+
+	var nextSigma = -B / Slope;
+
+	PEarlier = P;
+	aFuncParamsEarlier = aMethodParams.slice(0);
+
+	aMethodParams[1] = nextSigma;
+	P = Method.apply(this, aMethodParams);
+
+	//Was the slope steep enough to ensure that we approach the correct Sigma from a value greater than the correct sigma?
+	console.log(P - Price);
+	for (var j = 0; P - Price <= Tol; j++) {
+		nextSigma = nextSigma * 2;
+		aMethodParams[1] = nextSigma;
+		P = Method.apply(this, aMethodParams);
+	};
+
+	//are we close enough?
+	if (Math.abs(P - Price) <= Tol) {
+		return aMethodParams[1];
+	};
+
+	//Now, do this process iteratively
+	for (var i = 1; i < maxIter; i++) {
+		Slope = (P - PEarlier) / (aMethodParams[1] - aFuncParamsEarlier[1]);console.log(i);console.log(Slope);
+		B = P - Price - Slope * aMethodParams[1];
+
+		nextSigma = -B / Slope;
+
+		PEarlier = P;
+		aFuncParamsEarlier = aMethodParams.slice(0);
+
+		aMethodParams[1] = nextSigma;
+		P = Method.apply(this, aMethodParams);
+
+		//are we close enough?
+		if (Math.abs(P - Price) <= Tol) {
+			return aMethodParams[1];
+		};
+
+		//Was slope steep enough to ensure that we approach the correct Sigma from a value greater than the correct sigma?
+		for (var j = 0; P - Price <= Tol; j++) {
+			nextSigma = nextSigma * 2;
+			aMethodParams[1] = nextSigma;
+			P = Method.apply(this, aMethodParams);
+		};
+
+		//are we close enough?
+		if (Math.abs(P - Price) <= Tol) {
+			return aMethodParams[1];
+		};
+	};
+
+	return null;
 };
 
 compoundInterest.prototype.continuousRate = function() {
@@ -185,4 +321,99 @@ function normDist(z) {
 	var sign = 1;
     if (z < 0) sign = -1;
     return (0.5 * (1.0 + sign * erf(Math.abs(z)/Math.sqrt(2))));
+};
+
+function goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
+	var g, Y, Y1, OldTarget;
+
+	Tol = (Tol || 0.001 * Goal);
+	maxIter = (maxIter || 1000);
+
+	//is the independent variable within an object?
+	if (oFuncArgTarget.propStr) {
+		//Iterate through the guesses
+		for (var i = 0; i < maxIter; i++) {
+			//define the root of the function as the error
+			Y = Func.apply(null, aFuncParams) - Goal;
+			
+			//was our initial guess a good one?
+			if (Math.abs(Y) <= Tol) {
+				return getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
+			} else {
+				OldTarget = getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
+				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget + Y);
+				Y1 = Func.apply(null, aFuncParams) - Goal;
+				g = (Y1 - Y) / Y;
+
+				if (g === 0) {
+					g = 0.0001;
+				};
+
+				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget - Y / g);
+			};
+
+		};
+		if (Math.abs(Y) > Tol) {
+			return null;
+		};
+	} else {
+		//Iterate through the guesses
+		for (var i = 0; i < maxIter; i++) {
+			//define the root of the function as the error
+			Y = Func.apply(null, aFuncParams) - Goal;
+			
+			//was our initial guess a good one?
+			if (Math.abs(Y) <= Tol) {
+				return aFuncParams[oFuncArgTarget.Position];
+			} else {
+				OldTarget = aFuncParams[oFuncArgTarget.Position];
+				aFuncParams[oFuncArgTarget.Position] = OldTarget + Y;
+				Y1 = Func.apply(null, aFuncParams) - Goal;
+				g = (Y1 - Y) / Y;
+
+				if (g === 0) {
+					g = 0.0001;
+				};
+
+				aFuncParams[oFuncArgTarget.Position] = OldTarget - Y / g;
+			};
+
+		};
+		if (Math.abs(Y) > Tol) {
+			return null;
+		};
+	};
+};
+
+//source (modified from original): http://stackoverflow.com/questions/18936915/dynamically-set-property-of-nested-object
+//answerer: bpmason1; questioner: John B.
+//answerer url: http://stackoverflow.com/users/2736119/bpmason1
+//license: http://creativecommons.org/licenses/by-sa/3.0/legalcode
+function setObjVal(Obj, propStr, Value) {
+    var Schema = Obj;  // a moving reference to internal objects within obj
+    var pList = propStr.split('.');
+    var Len = pList.length;
+
+    for(var i = 0; i < Len-1; i++) {
+        var Elem = pList[i];
+        if( !Schema[Elem] ) Schema[Elem] = {}
+        Schema = Schema[Elem];
+    };
+
+    Schema[pList[Len-1]] = Value;
+};
+
+//source (modified from original): http://stackoverflow.com/questions/4343028/in-javascript-test-for-property-deeply-nested-in-object-graph
+//answerer: Zach; questioner: thisismyname
+//answerer url: http://stackoverflow.com/users/230892/zach
+//license: http://creativecommons.org/licenses/by-sa/3.0/legalcode
+function getObjVal(Obj, propStr) {
+    var Parts = propStr.split(".");
+    var Cur = Obj;
+
+    for (var i=0; i<Parts.length; i++) {
+        Cur = Cur[Parts[i]];
+    };
+
+    return Cur;
 };

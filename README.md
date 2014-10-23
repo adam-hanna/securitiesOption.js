@@ -118,7 +118,7 @@ The structure of this readme is:
   </ul>
 </dl>
 
-## Example:
+## Examples:
   
 ```html
 <!--HTML-->
