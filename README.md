@@ -79,7 +79,9 @@ The structure of this readme is:
     <li><b>Days</b>: days until expiry</li>
   </ul>
   <dt><h3>4. securitiesOption.impVol(Method, aMethodParams, Price, Tol, maxIter)</h3>
-  <dd>This method numerically calculates the implied volatility of an option using a modified secant algorithm. Unlike a normal secant method, this algorithm only approaches the correct volatility from a value greater than the goal.<br>NOTE: in aMethodParams, a guess for the value for sigma must be provided. The guess should be greater than the actual value of sigma. If the guess is lower, the algorithm will automatically increase sigma to an acceptably higher value.
+  <dd>This method numerically calculates the implied volatility of an option using a modified secant algorithm. Unlike a normal secant method, this algorithm only approaches the correct volatility from a value greater than the goal.
+  <dd>NOTE 1: in aMethodParams, a guess for the value of sigma must be provided. The guess should be greater than the actual value of sigma. If the guess is lower, the algorithm will automatically increase sigma to an acceptably higher value.
+  <dd>NOTE 2: the algorithm uses a linear estimate for the slope of the volatility curve. In other words, Vega is not used when the Black-Scholes input method is specified.
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Method</b>: the method to be used in calculating the options value. Note the example carefully!</li>
